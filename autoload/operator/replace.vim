@@ -41,10 +41,13 @@ function! operator#replace#do(motion_wise)  "{{{2
   if !s:is_empty_region(getpos("'["), getpos("']"))
     let original_selection = &g:selection
     let &g:selection = 'inclusive'
-    execute 'normal!' '`['.visual_command.'`]"_d'
+    execute 'normal!' '`['.visual_command.'`]'
     let &g:selection = original_selection
   end
+  let saved_reg = getreg(register, 1)
+  let saved_reg_type = getregtype(register)
   execute 'normal!' '"'.register.put_command
+  call setreg(register, saved_reg, saved_reg_type)
   return
 endfunction
 
